@@ -1,6 +1,6 @@
 {
   "name": "voltrazord-icons",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Capital Framework icons",
   "less": "src/voltrazord-icons.less",
   "style": "voltrazord-icons.css",
