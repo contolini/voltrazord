@@ -110,7 +110,7 @@ function buildComponents(components) {
   newVersion = semver.inc(util.pkg.version, bumps.sort().shift());
   util.printLn.success('voltrazord will also be published: ' + util.pkg.version + ' -> ' + newVersion + '. See https://goo.gl/cZvnnL.');
   util.pkg.version = newVersion;
-  fs.writeFileSync('package.json', JSON.stringify(util.pkg))
+  fs.writeFileSync('package.json', JSON.stringify(util.pkg, null, 2))
   util.printLn.info('Building components now...');
   return util.build();
 }
@@ -136,7 +136,7 @@ function updateCF() {
   //   if (!bumpCF) {
   //     return resolve();
   //   }
-    return commitAndPush(util.pkg.version);
+    return util.commitAndPush(util.pkg.version);
   // });
 }
 
