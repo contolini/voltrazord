@@ -103,7 +103,7 @@ function buildComponents(components) {
   // If there's nothing to publish. Abort everything.
   if (!componentsToPublish.length) {
     util.printLn.error('No components\' versions were updated so nothing will be published. Aborting.');
-    process.exit(0);
+    process.exit(1);
   }
 
   // Sort the diffs and increment CF by whatever the first (largest) increment is
