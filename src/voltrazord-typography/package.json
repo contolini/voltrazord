@@ -1,0 +1,21 @@
+{
+  "name": "voltrazord-typography",
+  "version": "1.0.1",
+  "description": "Voltrazord typography",
+  "less": "src/voltrazord-typography.less",
+  "style": "voltrazord-typography.css",
+  "scripts": {
+    "//": "This is a convenience script so that if you run `npm test` from this dir",
+    "//": "npm won't return  a 'no tests' error. Instead it'll check if you're in",
+    "//": "the larger voltrazord dir and execute those tests. It's removed",
+    "//": "before releases are tagged.",
+    "test": "case $(pwd) in */voltrazord/src/*) cd ../.. && npm test;; esac"
+  },
+  "dependencies": {
+    "voltrazord-core": "^1.0.0",
+    "voltrazord-icons": "^1.0.0"
+  },
+  "keywords": [
+    "typography"
+  ]
+}
