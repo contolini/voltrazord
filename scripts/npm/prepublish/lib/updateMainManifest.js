@@ -4,7 +4,7 @@ var fs = require('fs'),
     componentsDir = './components';
 
 fs.readdir(componentsDir, function(err, components) {
-  if (err) return console.log(err);
+  if (err) return console.error(err);
   var tasks = [];
   components.forEach(function(component){
     tasks.push(function(cb) {
@@ -18,7 +18,6 @@ fs.readdir(componentsDir, function(err, components) {
       deps[component.name] = component.version;
     });
     pkg.dependencies = deps;
-    console.log(pkg);
   });
 });
 
@@ -27,7 +26,7 @@ function getInfo(component, cb) {
     var manifest = componentsDir + '/' + component + '/package.json';
     if (fs.existsSync(manifest)) {
       return fs.readFile(manifest, function(err, data) {
-        if (err) return console.log(err);
+        if (err) return console.error(err);
         var json = JSON.parse(data);
         cb(null, json);
       });

@@ -24,14 +24,16 @@ util.getGitStatus('./')
   .then(getComponents)
   // Filter the components that have been updated and need to be published.
   .then(filterComponents)
-  // Build those components.
+  // Build the components.
   .then(buildComponents)
   // Confirm that the user wants to publish them.
   .then(confirmPublish)
   // Publish those components.
   .then(publishComponents)
-  // Bump CF's version if necessary.
-  .then(updateCF)
+  // Bump CF's new version number in package.json and commit the change.
+  .then(commit)
+  // Push the change to GitHub.
+  .then(push)
   // All done.
   .then(finish)
   // Report any errors that happen along the way.
@@ -103,7 +105,7 @@ function buildComponents(components) {
   // If there's nothing to publish. Abort everything.
   if (!componentsToPublish.length) {
     util.printLn.error('No components\' versions were updated so nothing will be published. Aborting.');
-    process.exit(1);
+    process.exit(0);
   }
 
   // Sort the diffs and increment CF by whatever the first (largest) increment is
@@ -131,21 +133,24 @@ function publishComponents() {
   return Promise.all(components.map(util.publish));
 }
 
-function updateCF() {
-  // return new Promise(function(resolve) {
-  //   if (!bumpCF) {
-  //     return resolve();
-  //   }
-    return util.commitAndPush(util.pkg.version);
-  // });
+function commit(result) {
+  console.log('---------------commit');
+  console.log(result.stderr);
+  console.log(result.stdout);
+  return util.commit(util.pkg.version);
+}
+
+function push(result) {
+  console.log('---------------push');
+  console.log(result.stderr);
+  console.log(result.stdout);
+  return util.push();
 }
 
 function finish(result) {
-  console.log(result);
-  // stdout.forEach(function(component) {
-  //   component = component.stdout.slice(2).replace('\n', '');
-  //   util.printLn.success(component, true);
-  // });
+  console.log('---------------finish');
+  console.log(result.stderr);
+  console.log(result.stdout);
   util.printLn.success('Hooray! All done!');
-  process.exit(0);
+  process.exit(1);
 }
