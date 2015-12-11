@@ -10,6 +10,7 @@ after_success:
   - git config user.email "CFPBot@users.noreply.github.com"
   - echo -e "$NPM_USERNAME\n$NPM_PASSWORD\n$NPM_EMAIL" | npm login
   - if [[ $TRAVIS_PULL_REQUEST == "false" && $TRAVIS_BRANCH == "master" ]]; then npm run release; fi
+  - if [[ $TRAVIS_PULL_REQUEST == "false" && $TRAVIS_BRANCH == "master" ]]; then ./scripts/npm/prepublish/lib/test.sh; fi
 env:
   global:
   - GH_REF: github.com/contolini/voltrazord.git
