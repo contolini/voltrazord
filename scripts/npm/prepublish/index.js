@@ -12,10 +12,10 @@ var path = require('path'),
 // Npm `prepublish` scripts are run after `install`. We want this script to only
 // run if the user explicity ran `npm publish` so abort if that's not the case.
 // See: https://github.com/npm/npm/issues/3059
-if (!inPublish() && !util.option.force) {
-  util.printLn.info('Prepublish script is only executed when running `npm publish`. Use --force to do it anyway.');
-  return process.exit(1);
-}
+// if (!inPublish() && !util.option.force) {
+//   util.printLn.info('Prepublish script is only executed when running `npm publish`. Use --force to do it anyway.');
+//   return process.exit(1);
+// }
 
 // Check git's status.
 util.getGitStatus('./')
