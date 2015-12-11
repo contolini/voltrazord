@@ -29,9 +29,9 @@ util.getGitStatus('./')
   // Publish those components.
   .then(publishComponents)
   // Bump CF's new version number in package.json and commit the change.
-  .then(commit)
+  // .then(commit)
   // Push the change to GitHub.
-  .then(push)
+  // .then(push)
   // All done.
   .then(finish)
   // Report any errors that happen along the way.
