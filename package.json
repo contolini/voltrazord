@@ -20,7 +20,7 @@
   },
   "scripts": {
     "postinstall": "node scripts/npm/postinstall",
-    "publish-components": "node scripts/npm/prepublish",
+    "prepublish": "node scripts/npm/prepublish",
     "build": "gulp build",
     "test": "gulp test"
   },

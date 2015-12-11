@@ -154,5 +154,5 @@ function finish(result) {
   console.log(result.stderr);
   console.log(result.stdout);
   util.printLn.success('Hooray! All done!');
-  process.exit(1);
+  process.exit(0);
 }
