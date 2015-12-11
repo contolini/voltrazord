@@ -52,6 +52,7 @@ function handleGitStatus(result) {
 function checkoutMaster() {
   // We only checkout master if this script is being run by Travis.
   if (isTravis) {
+    util.printLn.info('Checking out master branch...');
     return util.git.checkoutMaster();
   }
 }
