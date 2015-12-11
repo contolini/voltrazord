@@ -144,6 +144,8 @@ function push(result) {
 }
 
 function finish(result) {
+  console.log(result.stderr);
+  console.log(result.stdout);
   util.printLn.success('Hooray! All done!');
   process.exit(0);
 }
