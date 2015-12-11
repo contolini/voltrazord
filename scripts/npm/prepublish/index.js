@@ -40,6 +40,7 @@ util.getGitStatus('./')
   .catch(handleError);
 
 function handleError(msg) {
+  util.printLn.error('Oh no! An error!');
   util.printLn.error(msg);
   process.exit(1);
 }
