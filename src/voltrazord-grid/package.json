@@ -1,6 +1,6 @@
 {
   "name": "voltrazord-grid",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "Voltrazord grid",
   "less": "src/voltrazord-grid.less",
   "style": "voltrazord-grid.css",
