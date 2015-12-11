@@ -9,13 +9,10 @@ var path = require('path'),
     componentsDir = path.join(__dirname, '..', '..', '..', 'src'),
     componentsToPublish = [];
 
-// Npm `prepublish` scripts are run after `install`. We want this script to only
-// run if the user explicity ran `npm publish` so abort if that's not the case.
-// See: https://github.com/npm/npm/issues/3059
-// if (!inPublish() && !util.option.force) {
-//   util.printLn.info('Prepublish script is only executed when running `npm publish`. Use --force to do it anyway.');
-//   return process.exit(1);
-// }
+// Some temporary debugging stuff
+console.log('GH_REF: ', process.env.GH_REF);
+console.log('NPM_USERNAME: ', process.env.NPM_USERNAME);
+console.log('NPM_EMAIL: ', process.env.NPM_EMAIL + '\n');
 
 // Check git's status.
 util.getGitStatus('./')
@@ -41,7 +38,6 @@ util.getGitStatus('./')
   .catch(handleError);
 
 function handleError(msg) {
-  util.printLn.error('Oh no! An error!');
   util.printLn.error(msg);
   process.exit(1);
 }
@@ -107,7 +103,7 @@ function buildComponents(components) {
   // If there's nothing to publish. Abort everything.
   if (!componentsToPublish.length) {
     util.printLn.error('No components\' versions were updated so nothing will be published. Aborting.');
-    process.exit(0);
+    process.exit(1);
   }
 
   // Sort the diffs and increment CF by whatever the first (largest) increment is
