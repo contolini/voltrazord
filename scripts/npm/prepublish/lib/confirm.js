@@ -7,8 +7,8 @@ function confirm(opts) {
   opts = opts || {};
   var prompt = opts.prompt + ' [Y/n] ';
   return new Promise(function (resolve, reject) {
-    // If the -s or -f option is passed, or we're in a CI, don't prompt the user.
-    if (options.silent || options.force || process.env.CONTINUOUS_INTEGRATION) {
+    // If the -s option is passed or we're in a CI, don't prompt the user.
+    if (options.silent || process.env.CONTINUOUS_INTEGRATION) {
       return resolve(opts.data);
     }
     var rl = readline.createInterface({
