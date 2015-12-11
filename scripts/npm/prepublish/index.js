@@ -20,7 +20,7 @@ var path = require('path'),
 // Check git's status.
 util.getGitStatus('./')
   // Abort if the working directory isn't clean.
-  .then(handleGitStatus)
+  // .then(handleGitStatus)
   // Get a list of CF components from the components/ dir.
   .then(getComponents)
   // Filter the components that have been updated and need to be published.
