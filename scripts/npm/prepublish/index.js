@@ -6,18 +6,16 @@ var path = require('path'),
     inPublish = require('in-publish').inPublish,
     logSymbols = require('log-symbols'),
     util = require('./lib'),
+    isTravis = require('is-travis'),
     componentsDir = path.join(__dirname, '..', '..', '..', 'src'),
     componentsToPublish = [];
-
-// Some temporary debugging stuff
-console.log('GH_REF: ', process.env.GH_REF);
-console.log('NPM_USERNAME: ', process.env.NPM_USERNAME);
-console.log('NPM_EMAIL: ', process.env.NPM_EMAIL + '\n');
 
 // Check git's status.
 util.getGitStatus('./')
   // Abort if the working directory isn't clean.
-  // .then(handleGitStatus)
+  .then(handleGitStatus)
+  // Travis operates in a detached head state so checkout the master branch.
+  .then(checkoutMaster)
   // Get a list of CF components from the components/ dir.
   .then(getComponents)
   // Filter the components that have been updated and need to be published.
@@ -29,9 +27,9 @@ util.getGitStatus('./')
   // Publish those components.
   .then(publishComponents)
   // Bump CF's new version number in package.json and commit the change.
-  // .then(commit)
+  .then(commit)
   // Push the change to GitHub.
-  // .then(push)
+  .then(push)
   // All done.
   .then(finish)
   // Report any errors that happen along the way.
@@ -48,6 +46,13 @@ function handleGitStatus(result) {
   } else {
     util.printLn.error('Git working directory is not clean. Commit your work before publishing.');
     process.exit(1);
+  }
+}
+
+function checkoutMaster() {
+  // We only checkout master if this script is being run by Travis.
+  if (isTravis) {
+    return util.git.checkoutMaster();
   }
 }
 
@@ -132,16 +137,17 @@ function publishComponents() {
 }
 
 function commit(result) {
-  return util.commit(util.pkg.version);
+  if (result.stdout) util.printLn.console(result.stdout);
+  return util.git.commit(util.pkg.version);
 }
 
 function push(result) {
-  return util.push();
+  if (result.stdout) util.printLn.console(result.stdout);
+  return util.git.push();
 }
 
 function finish(result) {
-  console.log(result.stderr);
-  console.log(result.stdout);
+  if (result.stdout) util.printLn.console(result.stdout);
   util.printLn.success('Hooray! All done!');
   process.exit(0);
 }

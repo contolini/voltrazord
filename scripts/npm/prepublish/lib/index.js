@@ -6,8 +6,7 @@ module.exports = {
   getGitStatus: require('./gitStatus'),
   build: require('./build'),
   publish: require('./publish'),
-  commit: require('./commit'),
-  push: require('./push'),
+  git: require('./git'),
   getNpmVersion: require('./getNpmVersion'),
   pkg: JSON.parse(fs.readFileSync('package.json', 'utf8')),
   option: require('./getArgs')
