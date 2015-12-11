@@ -34,7 +34,7 @@ util.getGitStatus('./')
   // Bump CF's new version number in package.json and commit the change.
   .then(commit)
   // Push the change to GitHub.
-  // .then(push)
+  .then(push)
   // All done.
   .then(finish)
   // Report any errors that happen along the way.
@@ -136,23 +136,14 @@ function publishComponents() {
 }
 
 function commit(result) {
-  console.log('---------------commit');
-  console.log(result.stderr);
-  console.log(result.stdout);
   return util.commit(util.pkg.version);
 }
 
 function push(result) {
-  console.log('---------------push');
-  console.log(result.stderr);
-  console.log(result.stdout);
   return util.push();
 }
 
 function finish(result) {
-  console.log('---------------finish');
-  console.log(result.stderr);
-  console.log(result.stdout);
   util.printLn.success('Hooray! All done!');
   process.exit(0);
 }
