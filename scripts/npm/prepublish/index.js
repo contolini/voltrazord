@@ -13,7 +13,7 @@ var path = require('path'),
 // run if the user explicity ran `npm publish` so abort if that's not the case.
 // See: https://github.com/npm/npm/issues/3059
 if (!inPublish() && !util.option.force) {
-  util.printLn.info('Prepublish script should only be executed when running `npm publish`. Use --force to do it anyway.');
+  util.printLn.info('Prepublish script is only executed when running `npm publish`. Use --force to do it anyway.');
   return process.exit(0);
 }
 
