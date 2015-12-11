@@ -1,6 +1,6 @@
 {
   "name": "voltrazord",
-  "version": "1.1.6",
+  "version": "1.1.5",
   "description": "An experimental monorepo for managing complex decoupled UI frameworks",
   "author": {
     "name": "Consumer Financial Protection Bureau",
@@ -20,6 +20,7 @@
   },
   "scripts": {
     "postinstall": "node scripts/npm/postinstall",
+    "publish-components": "node scripts/npm/prepublish",
     "build": "gulp build",
     "test": "gulp test"
   },
