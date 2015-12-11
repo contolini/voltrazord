@@ -14,7 +14,7 @@ var path = require('path'),
 // See: https://github.com/npm/npm/issues/3059
 if (!inPublish() && !util.option.force) {
   util.printLn.info('Prepublish script is only executed when running `npm publish`. Use --force to do it anyway.');
-  return process.exit(0);
+  return process.exit(1);
 }
 
 // Check git's status.
