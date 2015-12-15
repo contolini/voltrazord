@@ -36,7 +36,7 @@ util.getGitStatus('./')
   .catch(handleError);
 
 process.on('SIGINT', function() {
-  printLn.error('OMG ABORT EVERYTHING.');
+  util.printLn.error('OMG ABORT EVERYTHING.');
   process.exit(1);
 });
 
