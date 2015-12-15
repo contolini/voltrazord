@@ -26,6 +26,8 @@ util.getGitStatus('./')
   .then(buildComponents)
   // Confirm that the user wants to publish them.
   .then(confirmPublish)
+  // Write the new version to the master component's manifest.
+  .then(updateManifest)
   // Bump CF's version number in package.json and commit the change.
   .then(commit)
   // Push the change to GitHub.
@@ -174,6 +176,10 @@ function confirmPublish() {
   });
 }
 
+function updateManifest() {
+  fs.writeFileSync('package.json', JSON.stringify(util.pkg, null, 2));
+}
+
 function commit() {
   if (!componentsToPublish.length) return;
   util.printLn.info('Committing change to manifest...');
@@ -189,8 +195,6 @@ function push(result) {
 
 function publishComponents(result) {
   if (result && result.stdout) util.printLn.console(result.stdout);
-  // Write the new version to the master component's manifest.
-  fs.writeFileSync('package.json', JSON.stringify(util.pkg, null, 2));
   if (!componentsToPublish.length) return;
   var components = componentsToPublish.map(function(component) {
     return component.name;
