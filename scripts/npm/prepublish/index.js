@@ -18,15 +18,15 @@ util.getGitStatus('./')
   .then(checkoutMaster)
   // Get a list of CF components from the components/ dir.
   .then(getComponents)
-  // Filter the components that have been updated and need to be published.
+  // Filter the components that have had their versions incremented.
   .then(filterComponents)
   // Build the components.
   .then(buildComponents)
   // Confirm that the user wants to publish them.
   .then(confirmPublish)
-  // Publish those components.
+  // Publish the components.
   .then(publishComponents)
-  // Bump CF's new version number in package.json and commit the change.
+  // Bump CF's version number in package.json and commit the change.
   .then(commit)
   // Push the change to GitHub.
   .then(push)
@@ -60,7 +60,7 @@ function checkCredentials(result) {
 }
 
 function checkoutMaster() {
-  // We only checkout master if this script is being run by Travis.
+  // Travis operates in a detached head state so checkout the master branch.
   if (isTravis) {
     util.printLn.info('Checking out master branch...');
     return util.git.checkoutMaster();
