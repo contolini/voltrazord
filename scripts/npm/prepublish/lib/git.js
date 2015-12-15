@@ -1,5 +1,5 @@
 var exec = require('child-process-promise').exec,
-    util = require('./lib');
+    util = require('./index');
 
 var git = {
   checkoutMaster: function() {
