@@ -25,7 +25,7 @@ function confirm(opts) {
       rl.close();
     });
     rl.on('SIGINT', function() {
-      printLn.error('\nOMG ABORT EVERYTHING.');
+      printLn.error('OMG ABORT EVERYTHING.');
       process.exit(1);
     });
   });
