@@ -49,6 +49,16 @@ function handleGitStatus(result) {
   }
 }
 
+function checkCredentials(result) {
+  if (isTravis) return;
+  util.printLn.info('Checking credentials...');
+  var npmrc = path.join(process.env.HOME || process.env.USERPROFILE, '.npmrc');
+  if (!fs.existsSync(npmrc) || !/_auth/.test(npmrc)) {
+    util.printLn.error('You need to be logged into npm and have permission to administer CF components. Talk to a node-ledgable coworker for assistance.');
+    process.exit(1);
+  }
+}
+
 function checkoutMaster() {
   // We only checkout master if this script is being run by Travis.
   if (isTravis) {
@@ -155,20 +165,20 @@ function publishComponents() {
 }
 
 function commit(result) {
-  if (!componentsToPublish.length) return;
-  if (result && result.stdout) util.printLn.console(result.stdout);
+  if (!result && !result.stdout) return;
+  util.printLn.console(result.stdout);
   return util.git.commit(util.pkg.version);
 }
 
 function push(result) {
-  if (!componentsToPublish.length) return;
-  if (result && result.stdout) util.printLn.console(result.stdout);
+  if (!result && !result.stdout) return;
+  util.printLn.console(result.stdout);
   return util.git.push();
 }
 
 function finish(result) {
-  if (!componentsToPublish.length) return;
-  if (result && result.stdout) util.printLn.console(result.stdout);
+  if (!result && !result.stdout) return;
+  util.printLn.console(result.stdout);
   util.printLn.success('Hooray! All done!');
   process.exit(0);
 }
