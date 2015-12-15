@@ -62,8 +62,10 @@ function getComponents() {
 }
 
 function filterComponents(components) {
+  var promises = components.map(compareVersionNumber);
+  promises.push()
   util.printLn.info('Checking which components need to be published to npm...');
-  return Promise.all(components.map(compareVersionNumber));
+  return Promise.all(promises);
 }
 
 function compareVersionNumber(component) {
@@ -71,9 +73,7 @@ function compareVersionNumber(component) {
   var manifest = componentsDir + '/' + component + '/package.json',
       localVersion = JSON.parse(fs.readFileSync(manifest, 'utf8')).version;
   return util.getNpmVersion(component).then(function(data) {
-  // return util.getNpmVersion('log-symbols').then(function(data) {
     var npmVersion = data['dist-tags'].latest;
-    // var npmVersion = '2.0.0';
     if (semver.gt(localVersion, npmVersion)) {
       util.printLn.success(component + ': ' + npmVersion + ' -> ' + localVersion, true);
       return {
@@ -106,10 +106,17 @@ function buildComponents(components) {
     }
   });
 
-  // If there's nothing to publish. Abort everything.
+  // If no components were updated, check if the master component was updated.
   if (!componentsToPublish.length) {
-    util.printLn.error('No components\' versions were updated so nothing will be published. Aborting.');
-    process.exit(1);
+    util.printLn.error('No components\' versions were updated.');
+    return checkMasterComponentVersionNumber().then(function(versions) {
+      if (semver.gt(versions.new, versions.old)) {
+        util.printLn.success('voltrazord\'s version was manually updated: ' + versions.old + ' -> ' + versions.new + '.');
+        return util.build();
+      }
+      util.printLn.error('voltrazord\'s version also wasn\'t updated. Nothing to publish. Abort.');
+      process.exit(1);
+    });
   }
 
   // Sort the diffs and increment CF by whatever the first (largest) increment is
@@ -119,6 +126,15 @@ function buildComponents(components) {
   fs.writeFileSync('package.json', JSON.stringify(util.pkg, null, 2))
   util.printLn.info('Building components now...');
   return util.build();
+}
+
+function checkMasterComponentVersionNumber() {
+  return util.getNpmVersion('voltrazord').then(function(data) {
+    return {
+      new: util.pkg.version,
+      old: data['dist-tags'].latest
+    };
+  });
 }
 
 function confirmPublish() {
@@ -131,6 +147,7 @@ function confirmPublish() {
 }
 
 function publishComponents() {
+  if (!componentsToPublish.length) return;
   var components = componentsToPublish.map(function(component) {
     return component.name;
   });
