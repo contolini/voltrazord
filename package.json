@@ -13,10 +13,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/contolini/voltrazord.git"
+    "url": "git+ssh://git@github.com/cfpb/capital-framework.git"
   },
   "bugs": {
-    "url": "https://github.com/contolini/voltrazord/issues"
+    "url": "https://github.com/cfpb/capital-framework/issues"
   },
   "scripts": {
     "postinstall": "node scripts/npm/postinstall",
