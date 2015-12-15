@@ -155,6 +155,7 @@ function publishComponents() {
 }
 
 function commit(result) {
+  console.log('--------------', result);
   if (result.stdout) util.printLn.console(result.stdout);
   return util.git.commit(util.pkg.version);
 }
