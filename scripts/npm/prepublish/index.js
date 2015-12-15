@@ -50,6 +50,7 @@ function handleGitStatus(result) {
 }
 
 function checkCredentials(result) {
+  // Travis gets its credentials from .travis.yml
   if (isTravis) return;
   util.printLn.info('Checking credentials...');
   var npmrc = path.join(process.env.HOME || process.env.USERPROFILE, '.npmrc');
@@ -155,7 +156,7 @@ function confirmPublish() {
 }
 
 function publishComponents() {
-  // Write the new version to the master component's manifest
+  // Write the new version to the master component's manifest.
   fs.writeFileSync('package.json', JSON.stringify(util.pkg, null, 2));
   if (!componentsToPublish.length) return;
   var components = componentsToPublish.map(function(component) {
