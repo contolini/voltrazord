@@ -20,7 +20,7 @@
       throws(block, [expected], [message])
   */
 
-  module( 'voltrazord-expandables', {
+  module( 'cf-expandables', {
     // This will run before each test in this module.
     setup: function() {
       this.$testSubjectOne = $('#test-subject-one');

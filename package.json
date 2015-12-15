@@ -1,6 +1,6 @@
 {
-  "name": "voltrazord",
-  "version": "4.0.0",
+  "name": "capital-framework",
+  "version": "3.0.0",
   "description": "An experimental monorepo for managing complex decoupled UI frameworks",
   "author": {
     "name": "Consumer Financial Protection Bureau",
@@ -9,7 +9,7 @@
   },
   "license": "CC0-1.0",
   "keywords": [
-    "voltrazord"
+    "capital-framework"
   ],
   "repository": {
     "type": "git",
