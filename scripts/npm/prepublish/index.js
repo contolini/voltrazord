@@ -13,7 +13,7 @@ var path = require('path'),
 // Check git's status.
 util.getGitStatus('./')
   // Abort if the working directory isn't clean.
-  .then(handleGitStatus)
+  // .then(handleGitStatus)
   // Travis operates in a detached head state so checkout the master branch.
   .then(checkoutMaster)
   // Get a list of CF components from the components/ dir.
@@ -53,6 +53,9 @@ function checkCredentials(result) {
   // Travis gets its credentials from .travis.yml
   if (isTravis) return;
   util.printLn.info('Checking credentials...');
+  // If the user doesn't have an auth token in their ~/.npmrc file, abort.
+  // TODO: Do a proper whoami because the user could be authenticated other ways.
+  // https://github.com/npm/npm-registry-client#clientwhoamiuri-params-cb
   var npmrc = path.join(process.env.HOME || process.env.USERPROFILE, '.npmrc');
   if (!fs.existsSync(npmrc) || !/_auth/.test(npmrc)) {
     util.printLn.error('You need to be logged into npm and have permission to administer CF components. Talk to a node-ledgable coworker for assistance.');
@@ -119,7 +122,7 @@ function buildComponents(components) {
   // TODO: Fix bug that results in some entries in the components array to be
   // blank. For now, filter them out.
   componentsToPublish = components.filter(function(component) {
-    if (component) {
+    if (component && component.oldVersion !== component.newVersion) {
       // While we're iterating, keep track of each component's semver diff
       bumps.push(semver.diff(component.oldVersion, component.newVersion));
       return component.name !== undefined;
