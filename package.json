@@ -1,6 +1,6 @@
 {
   "name": "voltrazord",
-  "version": "2.6.3",
+  "version": "2.0.3",
   "description": "An experimental monorepo for managing complex decoupled UI frameworks",
   "author": {
     "name": "Consumer Financial Protection Bureau",
