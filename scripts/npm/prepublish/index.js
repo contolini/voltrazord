@@ -174,9 +174,8 @@ function confirmPublish() {
   });
 }
 
-function commit(result) {
+function commit() {
   if (!componentsToPublish.length) return;
-  if (result && result.stdout) util.printLn.console(result.stdout);
   util.printLn.info('Committing change to manifest...');
   return util.git.commit(util.pkg.version);
 }
@@ -188,7 +187,8 @@ function push(result) {
   return util.git.push(util.pkg.repository.url);
 }
 
-function publishComponents() {
+function publishComponents(result) {
+  if (result && result.stdout) util.printLn.console(result.stdout);
   // Write the new version to the master component's manifest.
   fs.writeFileSync('package.json', JSON.stringify(util.pkg, null, 2));
   if (!componentsToPublish.length) return;
