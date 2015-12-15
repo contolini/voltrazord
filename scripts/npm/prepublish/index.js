@@ -72,8 +72,7 @@ function getComponents() {
 }
 
 function filterComponents(components) {
-  var promises = components.map(compareVersionNumber);
-  promises.push()
+  var promises = components.map(compareVersionNumber).push(compareMasterVersionNumber);
   util.printLn.info('Checking which components need to be published to npm...');
   return Promise.all(promises);
 }
@@ -104,7 +103,8 @@ function compareVersionNumber(component) {
 
 function buildComponents(components) {
   var newVersion,
-      bumps = [];
+      bumps = [],
+      masterComponent = components.pop();
 
   // TODO: Fix bug that results in some entries in the components array to be
   // blank. For now, filter them out.
@@ -119,26 +119,24 @@ function buildComponents(components) {
   // If no components were updated, check if the master component was updated.
   if (!componentsToPublish.length) {
     util.printLn.error('No components\' versions were updated.');
-    return checkMasterComponentVersionNumber().then(function(versions) {
-      if (semver.gt(versions.new, versions.old)) {
-        util.printLn.success('voltrazord\'s version was manually updated: ' + versions.old + ' -> ' + versions.new + '.');
-        return util.build();
-      }
-      util.printLn.error('voltrazord\'s version also wasn\'t updated. Nothing to publish. Abort.');
-      process.exit(1);
-    });
+    if (semver.gt(masterComponent.new, masterComponent.old)) {
+      util.printLn.success(util.pkg.name + '\'s version was manually updated: ' + masterComponent.old + ' -> ' + masterComponent.new + '.');
+      return util.build();
+    }
+    util.printLn.error(util.pkg.name + '\'s version also wasn\'t updated. Nothing to publish. Abort.');
+    process.exit(1);
   }
 
   // Sort the diffs and increment CF by whatever the first (largest) increment is
   newVersion = semver.inc(util.pkg.version, bumps.sort().shift());
-  util.printLn.success('voltrazord will also be published: ' + util.pkg.version + ' -> ' + newVersion + '. See https://goo.gl/cZvnnL.');
+  util.printLn.success(util.pkg.name + ' will also be published: ' + util.pkg.version + ' -> ' + newVersion + '. See https://goo.gl/cZvnnL.');
   util.pkg.version = newVersion;
   util.printLn.info('Building components now...');
   return util.build();
 }
 
-function checkMasterComponentVersionNumber() {
-  return util.getNpmVersion('voltrazord').then(function(data) {
+function compareMasterVersionNumber() {
+  return util.getNpmVersion(util.pkg.name).then(function(data) {
     return {
       new: util.pkg.version,
       old: data['dist-tags'].latest
