@@ -42,7 +42,7 @@ function handleError(msg) {
 
 function handleGitStatus(result) {
   if (!result.stdout && !result.stderr) {
-    util.printLn.success('Git working directory is clean.');
+    util.printLn.info('Git working directory is clean.');
   } else {
     util.printLn.error('Git working directory is not clean. Commit your work before publishing.');
     process.exit(1);
