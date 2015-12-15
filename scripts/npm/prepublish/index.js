@@ -13,7 +13,7 @@ var path = require('path'),
 // Check git's status.
 util.getGitStatus('./')
   // Abort if the working directory isn't clean.
-  .then(handleGitStatus)
+  // .then(handleGitStatus)
   // Travis operates in a detached head state so checkout the master branch.
   .then(checkoutMaster)
   // Get a list of CF components from the components/ dir.
@@ -98,6 +98,14 @@ function compareVersionNumber(component) {
       util.printLn.info(component + ' remains ' + npmVersion, true);
     }
   }).catch(function(err) {
+    if (/returned 404/.test(err)) {
+      util.printLn.success(component + ': ' + localVersion, true);
+      return {
+        name: component,
+        newVersion: localVersion,
+        oldVersion: localVersion
+      };
+    }
     util.printLn.error(err);
     process.exit(1);
   });
