@@ -53,10 +53,10 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
-	 * voltrazord-expandables
-	 * https://github.com/voltrazord/voltrazord-expandables
+	 * cf-expandables
+	 * https://github.com/cfpb/cf-expandables
 	 *
-	 * A public domain work of the Voltrazord
+	 * A public domain work of the Consumer Financial Protection Bureau
 	 */
 
 	global.jQuery = __webpack_require__(2);
