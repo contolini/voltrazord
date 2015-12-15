@@ -4,6 +4,9 @@ var git = {
   checkoutMaster: function() {
     return exec('git checkout master');
   },
+  checkBranch: function() {
+    return exec('git rev-parse --abbrev-ref HEAD');
+  },
   commit: function(version) {
     var msg = version || 'Auto-incrementing version';
     return exec('git commit -am "' + msg + '"');
