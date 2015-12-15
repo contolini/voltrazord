@@ -11,3 +11,8 @@ module.exports = {
   pkg: JSON.parse(fs.readFileSync('package.json', 'utf8')),
   option: require('./getArgs')
 }
+
+process.on('SIGINT', function() {
+  printLn.error('OMG ABORT EVERYTHING.');
+  process.exit(1);
+});
