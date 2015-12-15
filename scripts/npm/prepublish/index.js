@@ -161,11 +161,13 @@ function commit(result) {
 }
 
 function push(result) {
+  console.log('--------------', result);
   if (result.stdout) util.printLn.console(result.stdout);
   return util.git.push();
 }
 
 function finish(result) {
+  console.log('--------------', result);
   if (result.stdout) util.printLn.console(result.stdout);
   util.printLn.success('Hooray! All done!');
   process.exit(0);
