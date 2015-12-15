@@ -13,6 +13,6 @@ module.exports = {
 }
 
 process.on('SIGINT', function() {
-  util.printLn.error('OMG ABORT EVERYTHING.');
+  module.exports.printLn.error('OMG ABORT EVERYTHING.');
   process.exit(1);
 });
