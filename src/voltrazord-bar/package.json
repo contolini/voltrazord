@@ -1,9 +1,9 @@
 {
-  "name": "voltrazord-foo",
-  "version": "1.2.1",
-  "description": "Voltrazord foo",
-  "less": "src/voltrazord-foo.less",
-  "style": "voltrazord-foo.css",
+  "name": "voltrazord-bar",
+  "version": "1.1.1",
+  "description": "Voltrazord bar",
+  "less": "src/voltrazord-bar.less",
+  "style": "voltrazord-bar.css",
   "scripts": {
     "//": "This is a convenience script so that if you run `npm test` from this dir",
     "//": "npm won't return  a 'no tests' error. Instead it'll check if you're in",
@@ -16,6 +16,6 @@
     "voltrazord-icons": "^1.0.0"
   },
   "keywords": [
-    "foo"
+    "bar"
   ]
 }

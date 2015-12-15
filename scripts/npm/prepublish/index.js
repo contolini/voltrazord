@@ -13,7 +13,7 @@ var path = require('path'),
 // Check git's status.
 util.getGitStatus('./')
   // Abort if the working directory isn't clean.
-  // .then(handleGitStatus)
+  .then(handleGitStatus)
   // Verify they're logged into npm.
   .then(checkCredentials)
   // Travis operates in a detached head state so checkout the master branch.
@@ -54,15 +54,8 @@ function handleGitStatus(result) {
 function checkCredentials(result) {
   // Travis gets its credentials from .travis.yml
   if (isTravis) return;
-  util.printLn.info('Checking credentials...');
-  // If the user doesn't have an auth token in their ~/.npmrc file, abort.
-  // TODO: Do a proper whoami because the user could be authenticated other ways.
-  // https://github.com/npm/npm-registry-client#clientwhoamiuri-params-cb
-  var npmrc = path.join(process.env.HOME || process.env.USERPROFILE, '.npmrc');
-  if (!fs.existsSync(npmrc) || !/_auth/.test(fs.readFileSync(npmrc, 'utf8'))) {
-    util.printLn.error('You need to be logged into npm and have permission to administer CF components. Talk to a node-ledgable coworker for assistance.');
-    process.exit(1);
-  }
+  util.printLn.info('Checking npm credentials...');
+  return util.checkNpmAuth(util.pkg.name);
 }
 
 function checkoutMaster() {
