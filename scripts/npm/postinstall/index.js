@@ -1,7 +1,7 @@
 // After the normal `npm install` finishes, this script reads every components' 
 // package.json and install any dependencies that are listed. This makes it so 
 // that we don't have to keep track of dependencies in *both* components' 
-// `package.json` and the larger voltrazord `package.json`.
+// `package.json` and the larger capital-framework `package.json`.
 
 var fs = require('fs'),
     async = require('async'),
@@ -26,7 +26,7 @@ fs.readdir(componentsDir, function(err, components) {
       var componentDeps = component.dependencies;
       Object.keys(componentDeps).forEach(function(dep) {
         // Ignore CF components.
-        if (dep.indexOf('voltrazord-') === 0) return;
+        if (dep.indexOf('cf-') === 0) return;
         deps[dep] = componentDeps[dep];
       });
     });
@@ -37,7 +37,7 @@ fs.readdir(componentsDir, function(err, components) {
 });
 
 function getInfo(component, cb) {
-  if (component.indexOf('voltrazord-') === 0) {
+  if (component.indexOf('cf-') === 0) {
     var manifest = componentsDir + '/' + component + '/package.json';
     if (fs.existsSync(manifest)) {
       return fs.readFile(manifest, function(err, data) {

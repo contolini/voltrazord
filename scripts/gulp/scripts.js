@@ -5,12 +5,12 @@ var gulp = require('gulp'),
     $ = require('gulp-load-plugins')(),
     component = require('./parseComponentName');
 
-// Compile the master voltrazord.less file.
-gulp.task( 'scripts:voltrazord', function() {
-  return gulp.src('./src/voltrazord.js')
+// Compile the master capital-framework.less file.
+gulp.task( 'scripts:cf', function() {
+  return gulp.src('./src/capital-framework.js')
     .pipe($.webpack())
     .pipe($.rename({
-      basename: 'voltrazord'
+      basename: 'capital-framework'
     }))
     .pipe(gulp.dest('./dist'))
     .pipe($.uglify())
