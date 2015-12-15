@@ -72,8 +72,7 @@ function getComponents() {
 }
 
 function filterComponents(components) {
-  var promises = components.map(compareVersionNumber);
-  promises.push(compareMasterVersionNumber);
+  var promises = components.map(compareVersionNumber).push(compareMasterVersionNumber());
   util.printLn.info('Checking which components need to be published to npm...');
   return Promise.all(promises);
 }
