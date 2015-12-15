@@ -1,5 +1,4 @@
-var exec = require('child-process-promise').exec,
-    util = require('./index');
+var exec = require('child-process-promise').exec;
 
 var git = {
   checkoutMaster: function() {
@@ -9,11 +8,11 @@ var git = {
     var msg = version || 'Auto-incrementing version';
     return exec('git commit -am "' + msg + '"');
   },
-  push: function() {
+  push: function(remote) {
     if (process.env.GH_TOKEN) {
-      return exec('git push "https://' + process.env.GH_TOKEN + '@' + util.pkg.repository.url + '" master:master');
+      return exec('git push "https://' + process.env.GH_TOKEN + '@' + remote + '" master:master');
     }
-    return exec('git push ' + util.pkg.repository.url + ' master');
+    return exec('git push ' + remote + ' master');
   }
 }
 
