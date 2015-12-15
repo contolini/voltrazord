@@ -26,12 +26,12 @@ util.getGitStatus('./')
   .then(buildComponents)
   // Confirm that the user wants to publish them.
   .then(confirmPublish)
-  // Publish the components.
-  .then(publishComponents)
   // Bump CF's version number in package.json and commit the change.
   .then(commit)
   // Push the change to GitHub.
   .then(push)
+  // Publish the components.
+  .then(publishComponents)
   // All done.
   .then(finish)
   // Report any errors that happen along the way.
@@ -63,6 +63,13 @@ function checkoutMaster() {
   if (isTravis) {
     util.printLn.info('Checking out master branch...');
     return util.git.checkoutMaster();
+  } else {
+    return util.git.checkBranch().then(function(result) {
+      if (result.stdout.trim() !== 'master') {
+        util.printLn.error('You\'re not on master. Merge your changes into master before publishing.');
+        process.exit(1);
+      }
+    });
   }
 }
 
@@ -79,8 +86,10 @@ function filterComponents(components) {
 
 function compareVersionNumber(component) {
   if (component.indexOf('voltrazord-') !== 0) return;
+
   var manifest = componentsDir + '/' + component + '/package.json',
       localVersion = JSON.parse(fs.readFileSync(manifest, 'utf8')).version;
+
   return util.getNpmVersion(component).then(function(data) {
     var npmVersion = data['dist-tags'].latest;
     if (semver.gt(localVersion, npmVersion)) {
@@ -106,6 +115,15 @@ function compareVersionNumber(component) {
     }
     util.printLn.error(err);
     process.exit(1);
+  });
+}
+
+function compareMasterVersionNumber() {
+  return util.getNpmVersion(util.pkg.name).then(function(data) {
+    return {
+      new: util.pkg.version,
+      old: data['dist-tags'].latest
+    };
   });
 }
 
@@ -147,15 +165,6 @@ function buildComponents(components) {
   return util.build();
 }
 
-function compareMasterVersionNumber() {
-  return util.getNpmVersion(util.pkg.name).then(function(data) {
-    return {
-      new: util.pkg.version,
-      old: data['dist-tags'].latest
-    };
-  });
-}
-
 function confirmPublish() {
   util.printLn.info('Components have been built to tmp/.');
   return util.confirm({
@@ -163,16 +172,6 @@ function confirmPublish() {
     yes: 'Publishing the components to npm...',
     no: 'Aborting. See ya!'
   });
-}
-
-function publishComponents() {
-  // Write the new version to the master component's manifest.
-  fs.writeFileSync('package.json', JSON.stringify(util.pkg, null, 2));
-  if (!componentsToPublish.length) return;
-  var components = componentsToPublish.map(function(component) {
-    return component.name;
-  });
-  return Promise.all(components.map(util.publish));
 }
 
 function commit(result) {
@@ -187,6 +186,16 @@ function push(result) {
   if (result && result.stdout) util.printLn.console(result.stdout);
   util.printLn.info('Pushing commit to GitHub...');
   return util.git.push(util.pkg.repository.url);
+}
+
+function publishComponents() {
+  // Write the new version to the master component's manifest.
+  fs.writeFileSync('package.json', JSON.stringify(util.pkg, null, 2));
+  if (!componentsToPublish.length) return;
+  var components = componentsToPublish.map(function(component) {
+    return component.name;
+  });
+  return Promise.all(components.map(util.publish));
 }
 
 function finish(result) {
