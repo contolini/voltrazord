@@ -10,6 +10,7 @@ var git = {
   },
   push: function(remote) {
     if (process.env.GH_TOKEN) {
+      remote = remote.match(/github\.com.+/)[0];
       return exec('git push "https://' + process.env.GH_TOKEN + '@' + remote + '" master:master');
     }
     return exec('git push ' + remote + ' master');
