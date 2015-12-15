@@ -25,7 +25,6 @@
     "test": "gulp test"
   },
   "devDependencies": {
-    "async": "^1.5.0",
     "bluebird": "^3.0.5",
     "chalk": "^1.1.1",
     "child-process-promise": "^1.1.0",
@@ -60,7 +59,6 @@
     "marked": "^0.3.5",
     "minimist": "^1.2.0",
     "npm-registry-client": "^7.0.7",
-    "npmi": "^1.0.1",
     "promisify-node": "^0.2.1",
     "qunit": "^0.7.7",
     "require-dir": "^0.3.0",
