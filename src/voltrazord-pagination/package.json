@@ -1,6 +1,6 @@
 {
   "name": "voltrazord-pagination",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "description": "Voltrazord pagination",
   "less": "src/voltrazord-pagination.less",
   "style": "voltrazord-pagination.css",

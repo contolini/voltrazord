@@ -13,7 +13,7 @@ var path = require('path'),
 // Check git's status.
 util.getGitStatus('./')
   // Abort if the working directory isn't clean.
-  // .then(handleGitStatus)
+  .then(handleGitStatus)
   // Travis operates in a detached head state so checkout the master branch.
   .then(checkoutMaster)
   // Get a list of CF components from the components/ dir.
