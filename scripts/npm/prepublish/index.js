@@ -129,8 +129,8 @@ function buildComponents(components) {
   }
 
   // Sort the diffs and increment CF by whatever the first (largest) increment is
-  newVersion = semver.inc(util.pkg.version, bumps.sort().shift());
-  util.printLn.success(util.pkg.name + ' will also be published: ' + util.pkg.version + ' -> ' + newVersion + '. See https://goo.gl/cZvnnL.');
+  newVersion = semver.inc(masterComponent.old, bumps.sort().shift());
+  util.printLn.success(util.pkg.name + ' will also be published: ' + masterComponent.old + ' -> ' + newVersion + '. See https://goo.gl/cZvnnL.');
   util.pkg.version = newVersion;
   util.printLn.info('Building components now...');
   return util.build();
