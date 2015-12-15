@@ -14,6 +14,8 @@ var path = require('path'),
 util.getGitStatus('./')
   // Abort if the working directory isn't clean.
   // .then(handleGitStatus)
+  // Verify they're logged into npm.
+  .then(checkCredentials)
   // Travis operates in a detached head state so checkout the master branch.
   .then(checkoutMaster)
   // Get a list of CF components from the components/ dir.
@@ -57,7 +59,7 @@ function checkCredentials(result) {
   // TODO: Do a proper whoami because the user could be authenticated other ways.
   // https://github.com/npm/npm-registry-client#clientwhoamiuri-params-cb
   var npmrc = path.join(process.env.HOME || process.env.USERPROFILE, '.npmrc');
-  if (!fs.existsSync(npmrc) || !/_auth/.test(npmrc)) {
+  if (!fs.existsSync(npmrc) || !/_auth/.test(fs.readFileSync(npmrc, 'utf8'))) {
     util.printLn.error('You need to be logged into npm and have permission to administer CF components. Talk to a node-ledgable coworker for assistance.');
     process.exit(1);
   }
@@ -106,7 +108,7 @@ function compareVersionNumber(component) {
       return {
         name: component,
         newVersion: localVersion,
-        oldVersion: localVersion
+        oldVersion: undefined
       };
     }
     util.printLn.error(err);
@@ -116,15 +118,19 @@ function compareVersionNumber(component) {
 
 function buildComponents(components) {
   var newVersion,
-      bumps = [],
+      diffs = [],
       masterComponent = components.pop();
 
   // TODO: Fix bug that results in some entries in the components array to be
   // blank. For now, filter them out.
   componentsToPublish = components.filter(function(component) {
-    if (component && component.oldVersion !== component.newVersion) {
-      // While we're iterating, keep track of each component's semver diff
-      bumps.push(semver.diff(component.oldVersion, component.newVersion));
+    var bump;
+    if (component) {
+      // While we're iterating, keep track of each component's semver diff.
+      // If there's no old version it means it's a new component and CF should
+      // get a minor bump instead of whatever the actual diff is.
+      diff = !component.oldVersion ? 'minor' : semver.diff(component.oldVersion, component.newVersion);
+      diffs.push(diff);
       return component.name !== undefined;
     }
   });
@@ -141,7 +147,7 @@ function buildComponents(components) {
   }
 
   // Sort the diffs and increment CF by whatever the first (largest) increment is
-  newVersion = semver.inc(masterComponent.old, bumps.sort().shift());
+  newVersion = semver.inc(masterComponent.old, diffs.sort().shift());
   util.printLn.success(util.pkg.name + ' will also be published: ' + masterComponent.old + ' -> ' + newVersion + '. See https://goo.gl/cZvnnL.');
   util.pkg.version = newVersion;
   util.printLn.info('Building components now...');
