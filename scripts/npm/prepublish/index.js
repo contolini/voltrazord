@@ -165,19 +165,19 @@ function publishComponents() {
 }
 
 function commit(result) {
-  if (!result && !result.stdout) return;
+  if (!result || !result.stdout) return;
   util.printLn.console(result.stdout);
   return util.git.commit(util.pkg.version);
 }
 
 function push(result) {
-  if (!result && !result.stdout) return;
+  if (!result || !result.stdout) return;
   util.printLn.console(result.stdout);
   return util.git.push();
 }
 
 function finish(result) {
-  if (!result && !result.stdout) return;
+  if (!result || !result.stdout) return;
   util.printLn.console(result.stdout);
   util.printLn.success('Hooray! All done!');
   process.exit(0);
