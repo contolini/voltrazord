@@ -63,12 +63,12 @@ function checkCredentials(result) {
 function checkoutMaster() {
   // Travis operates in a detached head state so checkout the master branch.
   if (isTravis) {
-    util.printLn.info('Checking out master branch...');
+    util.printLn.info('Checking out ' + process.env.GH_BRANCH + ' branch...');
     return util.git.checkoutMaster();
   } else {
     return util.git.checkBranch().then(function(result) {
-      if (result.stdout.trim() !== 'master') {
-        util.printLn.error('You\'re not on master. Merge your changes into master before publishing.');
+      if (result.stdout.trim() !== process.env.GH_BRANCH) {
+        util.printLn.error('You\'re not on the ' + process.env.GH_BRANCH + ' branch. Merge your changes into ' + process.env.GH_BRANCH + ' before publishing.');
         process.exit(1);
       }
     });

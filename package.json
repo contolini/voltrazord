@@ -20,7 +20,8 @@
   },
   "scripts": {
     "postinstall": "node scripts/npm/postinstall",
-    "release": "node scripts/npm/prepublish && npm publish",
+    "release": "npm run set-env && node scripts/npm/prepublish && npm publish",
+    "set-env": "export GH_BRANCH=voltrazord-test",
     "build": "gulp build",
     "test": "gulp test"
   },

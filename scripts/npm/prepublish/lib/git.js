@@ -2,7 +2,7 @@ var exec = require('child-process-promise').exec;
 
 var git = {
   checkoutMaster: function() {
-    return exec('git checkout master');
+    return exec('git checkout ' + process.env.GH_BRANCH);
   },
   checkBranch: function() {
     return exec('git rev-parse --abbrev-ref HEAD');
@@ -14,9 +14,9 @@ var git = {
   push: function(remote) {
     if (process.env.GH_TOKEN) {
       remote = remote.match(/github\.com.+/)[0];
-      return exec('git push "https://' + process.env.GH_TOKEN + '@' + remote + '" master:master');
+      return exec('git push "https://' + process.env.GH_TOKEN + '@' + remote + '" ' + process.env.GH_BRANCH);
     }
-    return exec('git push ' + remote + ' master');
+    return exec('git push ' + remote + ' ' + process.env.GH_BRANCH);
   }
 }
 
