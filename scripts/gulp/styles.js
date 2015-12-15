@@ -5,9 +5,9 @@ var gulp = require('gulp'),
     importPlugin = require('less-plugin-npm-import'),
     component = require('./parseComponentName');
 
-// Compile the master voltrazord.less file.
-gulp.task( 'styles:voltrazord', function() {
-  return gulp.src('./src/voltrazord.less')
+// Compile the master capital-framework.less file.
+gulp.task( 'styles:cf', function() {
+  return gulp.src('./src/capital-framework.less')
     .pipe($.less({
       plugins: [new importPlugin({prefix: '../node_modules/'})]
     }))
@@ -25,8 +25,8 @@ gulp.task( 'styles:components', function() {
   return gulp.src('./src/' + (component || '*') + '/src/*.less')
     .pipe($.ignore.exclude(function(vf) {
       // Exclude Less files that don't share the same name as the directory
-      // they're in. This filters out things like voltrazord-vars.less but still
-      // includes voltrazord-core.less.
+      // they're in. This filters out things like capital-framework-vars.less but still
+      // includes capital-framework-core.less.
       var matches = vf.path.match(/\/([\w-]*)\/src\/([\w-]*)\.less/);
       return matches[1] !== matches[2];
     }))
