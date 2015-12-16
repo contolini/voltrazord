@@ -1,7 +1,7 @@
 {
-  "name": "voltrazord",
-  "version": "4.0.0",
-  "description": "An experimental monorepo for managing complex decoupled UI frameworks",
+  "name": "capital-framework",
+  "version": "3.0.0",
+  "description": "CFPB's UI framework",
   "author": {
     "name": "Consumer Financial Protection Bureau",
     "email": "tech@cfpb.gov",
@@ -9,14 +9,14 @@
   },
   "license": "CC0-1.0",
   "keywords": [
-    "voltrazord"
+    "capital-framework"
   ],
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/contolini/voltrazord.git"
   },
   "bugs": {
-    "url": "https://github.com/contolini/voltrazord/issues"
+    "url": "https://github.com/cfpb/capital-framework/issues"
   },
   "scripts": {
     "postinstall": "node scripts/npm/postinstall",

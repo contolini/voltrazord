@@ -1,6 +1,6 @@
-# Voltrazord
+# Capital Framework
 
-An experimental monorepo for managing complex decoupled UI frameworks.
+The Consumer Financial Protection Bureau's user interface framework.
 
 ## Open source licensing info
 1. [TERMS](TERMS.md)

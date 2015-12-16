@@ -87,7 +87,7 @@ function filterComponents(components) {
 }
 
 function compareVersionNumber(component) {
-  if (component.indexOf('voltrazord-') !== 0) return;
+  if (component.indexOf('cf-') !== 0) return;
 
   var manifest = componentsDir + '/' + component + '/package.json',
       localVersion = JSON.parse(fs.readFileSync(manifest, 'utf8')).version;
